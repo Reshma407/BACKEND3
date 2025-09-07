@@ -1,25 +1,28 @@
-const express = require('express');
-const app = express();
+import express from "express";
+import bookRoutes from "./routes/book.route.js";
+import userRoutes from "./routes/user.route.js"
+import authRoutes from "./routes/auth.route.js"
+import { connectDB } from "./config/db.js";
 
-// Middleware to parse JSON
+const app = express();
+connectDB()
+
 app.use(express.json());
 
-// ✅ Import your route file
-const bookRoutes = require('./bookroute'); // Make sure the filename matches exactly
+// middleware
+// is like a bridge between the request
+// coming from client and the response sent by server
 
-// ✅ Use the routes
-app.use('/books', bookRoutes);
+// function which has req res next
+app.use("/books", bookRoutes);
+app.use("/users",userRoutes)
+app.use("/auth",authRoutes)
 
-// Sample route
-app.get('/', (req, res) => {
-  res.send('Server is running');
+
+app.get("/", (req, res) => {
+  res.send("Server is running");
 });
 
-app.get('/about', (req, res) => {
-  res.send('This is the About page');
-});
-
-// Start server
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+app.listen(5000, () => {
+  console.log("server is running on port 5000");
 });
